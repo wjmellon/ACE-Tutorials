@@ -17,7 +17,7 @@ library(tidyverse)
 ## Simulating data
 Lets simulate data for 10 random animals that I am making up.
 ```{r cars}
-Species <- c("chicken", "duck", "tiger", "unicorn", 
+Species <- c("marmoset", "duck", "tiger", "unicorn", 
              "rabbit", "monky", "platypus", "rhino", "turkey", "hippo")
 Lifespan <- rnorm(10, 56, 20)
 BodyMass <- rnorm(10, 150, 40)
