@@ -1,0 +1,147 @@
+---
+title: "Example R Markdown with Plots"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Required Libraries
+
+```{r load-libraries}
+library(ggplot2)
+library(dplyr)
+library(ape)
+library(caper)
+library(nlme)
+library(geiger)
+library(phytools)
+```
+
+## Example Data
+We will use the built-in `mtcars` dataset.
+
+```{r display-data}
+head(mtcars)
+```
+
+## Base R Plots
+
+### Scatter Plot
+This plot is useful for visualizing relationships between two continuous variables.
+```{r base-scatter}
+plot(mtcars$mpg, mtcars$hp, 
+     main = "MPG vs HP", 
+     xlab = "Miles Per Gallon", 
+     ylab = "Horsepower", 
+     pch = 19, col = "blue")
+```
+
+### Histogram
+A histogram is ideal for understanding the distribution of a single continuous variable.
+```{r base-hist}
+hist(mtcars$mpg, 
+     main = "Histogram of MPG", 
+     xlab = "Miles Per Gallon", 
+     col = "lightblue", 
+     border = "black")
+```
+
+## ggplot2 Visualizations
+
+### ggplot Scatter Plot
+This scatter plot is used to analyze the correlation between two continuous variables, such as fuel efficiency and horsepower.
+```{r ggplot-scatter}
+ggplot(mtcars, aes(x = mpg, y = hp)) +
+  geom_point(color = "blue", size = 3) +
+  labs(title = "MPG vs HP", x = "Miles Per Gallon", y = "Horsepower") +
+  theme_minimal()
+```
+
+### ggplot Histogram
+Histograms help in identifying the distribution and frequency of data points within specified bins.
+```{r ggplot-hist}
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of MPG", x = "Miles Per Gallon", y = "Count") +
+  theme_minimal()
+```
+
+### ggplot Boxplot
+Boxplots are useful for comparing distributions across categorical variables and detecting outliers.
+```{r ggplot-boxplot}
+ggplot(mtcars, aes(x = factor(cyl), y = mpg, fill = factor(cyl))) +
+  geom_boxplot() +
+  labs(title = "MPG by Number of Cylinders", x = "Cylinders", y = "Miles Per Gallon") +
+  theme_minimal()
+```
+
+### ggplot Bar Plot
+Bar plots are used to visualize categorical data by showing the frequency of each category.
+```{r ggplot-barplot}
+ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar(fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Count of Cars by Cylinder", x = "Cylinders", y = "Count") +
+  theme_minimal()
+```
+
+## Phylogenetic Tree Plot
+Phylogenetic trees are used to visualize evolutionary relationships between species or other hierarchical structures.
+```{r phylo-tree}
+tree <- read.tree("sampleTree.nwk")
+plot(tree, main = "Phylogenetic Tree", cex = 0.1)
+```
+
+## Phylogenetic Generalized Least Squares (PGLS)
+PGLS is used to account for phylogenetic relatedness in regression models. 
+Here, we will perform a PGLS analysis using the `caper` package.
+
+```{r pgls-analysis}
+data <- read.csv("sampleData.csv")
+
+#correlation strucutre
+bm<-corBrownian(1,tree)
+model1<-gls(NeoplasiaPrevalence~max_longevity, data=data, correlation=bm)
+
+```
+
+Plot challenge
+
+### Dataset 1: Time Series Data
+This dataset represents a time series with a continuous trend.
+
+```{r time-series-data}
+time_series_data <- data.frame(
+  time = 1:100,
+  value = cumsum(rnorm(100))
+)
+head(time_series_data)
+```
+
+### Dataset 2: Categorical Comparison
+This dataset represents counts for different categories.
+
+```{r categorical-data}
+categorical_data <- data.frame(
+  category = rep(c("A", "B", "C", "D"), each = 10),
+  value = rpois(40, lambda = 10)
+)
+head(categorical_data)
+```
+
+### Dataset 3: Correlation Data
+This dataset represents a relationship between two continuous variables.
+
+```{r correlation-data}
+correlation_data <- data.frame(
+  x = rnorm(100, mean = 50, sd = 10),
+  y = rnorm(100, mean = 100, sd = 20)
+)
+head(correlation_data)
+```
+
+
+
